@@ -1,0 +1,8 @@
+*.caffemodel
+*.solverstate
+*.jpg
+*.png
+*.svg
+*.bmp
+external/*
+*.h5

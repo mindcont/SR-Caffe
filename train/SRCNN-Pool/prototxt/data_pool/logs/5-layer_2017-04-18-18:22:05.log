@@ -1,0 +1,254 @@
+I0418 18:22:05.765455 86354 caffe.cpp:218] Using GPUs 0
+I0418 18:22:05.775346 86354 caffe.cpp:223] GPU 0: Quadro K6000
+I0418 18:22:06.187186 86354 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 556
+test_interval: 500
+base_lr: 0.001
+display: 500
+max_iter: 100000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0001
+stepsize: 116840
+snapshot: 10000
+snapshot_prefix: "Model/5-layer_"
+solver_mode: GPU
+device_id: 0
+net: "VDSR_net.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0418 18:22:06.187392 86354 solver.cpp:87] Creating training net from net file: VDSR_net.prototxt
+I0418 18:22:06.187757 86354 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0418 18:22:06.187865 86354 net.cpp:51] Initializing net from parameters: 
+name: "VDSR"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "data"
+  type: "HDF5Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "train.txt"
+    batch_size: 64
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 0.1
+  }
+  convolution_param {
+    num_output: 64
+    pad: 3
+    kernel_size: 3
+    stride: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 0.1
+  }
+  convolution_param {
+    num_output: 64
+    pad: 3
+    kernel_size: 3
+    stride: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 0.1
+  }
+  convolution_param {
+    num_output: 1
+    pad: 3
+    kernel_size: 3
+    stride: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "conv3"
+  bottom: "label"
+  top: "loss"
+}
+I0418 18:22:06.187944 86354 layer_factory.hpp:77] Creating layer data
+I0418 18:22:06.187961 86354 net.cpp:84] Creating Layer data
+I0418 18:22:06.187971 86354 net.cpp:380] data -> data
+I0418 18:22:06.187999 86354 net.cpp:380] data -> label
+I0418 18:22:06.188015 86354 hdf5_data_layer.cpp:80] Loading list of HDF5 filenames from: train.txt
+I0418 18:22:06.188047 86354 hdf5_data_layer.cpp:94] Number of HDF5 files: 1
+I0418 18:22:06.189105 86354 hdf5.cpp:32] Datatype class: H5T_FLOAT
+I0418 18:22:06.296807 86354 net.cpp:122] Setting up data
+I0418 18:22:06.296859 86354 net.cpp:129] Top shape: 64 1 41 41 (107584)
+I0418 18:22:06.296867 86354 net.cpp:129] Top shape: 64 1 41 41 (107584)
+I0418 18:22:06.296871 86354 net.cpp:137] Memory required for data: 860672
+I0418 18:22:06.296882 86354 layer_factory.hpp:77] Creating layer conv1
+I0418 18:22:06.296916 86354 net.cpp:84] Creating Layer conv1
+I0418 18:22:06.296922 86354 net.cpp:406] conv1 <- data
+I0418 18:22:06.296941 86354 net.cpp:380] conv1 -> conv1
+I0418 18:22:06.298408 86354 net.cpp:122] Setting up conv1
+I0418 18:22:06.298427 86354 net.cpp:129] Top shape: 64 64 15 15 (921600)
+I0418 18:22:06.298432 86354 net.cpp:137] Memory required for data: 4547072
+I0418 18:22:06.298450 86354 layer_factory.hpp:77] Creating layer relu1
+I0418 18:22:06.298461 86354 net.cpp:84] Creating Layer relu1
+I0418 18:22:06.298466 86354 net.cpp:406] relu1 <- conv1
+I0418 18:22:06.298473 86354 net.cpp:367] relu1 -> conv1 (in-place)
+I0418 18:22:06.298488 86354 net.cpp:122] Setting up relu1
+I0418 18:22:06.298494 86354 net.cpp:129] Top shape: 64 64 15 15 (921600)
+I0418 18:22:06.298519 86354 net.cpp:137] Memory required for data: 8233472
+I0418 18:22:06.298524 86354 layer_factory.hpp:77] Creating layer pool1
+I0418 18:22:06.298532 86354 net.cpp:84] Creating Layer pool1
+I0418 18:22:06.298537 86354 net.cpp:406] pool1 <- conv1
+I0418 18:22:06.298543 86354 net.cpp:380] pool1 -> pool1
+I0418 18:22:06.298598 86354 net.cpp:122] Setting up pool1
+I0418 18:22:06.298610 86354 net.cpp:129] Top shape: 64 64 8 8 (262144)
+I0418 18:22:06.298614 86354 net.cpp:137] Memory required for data: 9282048
+I0418 18:22:06.298619 86354 layer_factory.hpp:77] Creating layer conv2
+I0418 18:22:06.298632 86354 net.cpp:84] Creating Layer conv2
+I0418 18:22:06.298637 86354 net.cpp:406] conv2 <- pool1
+I0418 18:22:06.298645 86354 net.cpp:380] conv2 -> conv2
+I0418 18:22:06.300766 86354 net.cpp:122] Setting up conv2
+I0418 18:22:06.300786 86354 net.cpp:129] Top shape: 64 64 4 4 (65536)
+I0418 18:22:06.300791 86354 net.cpp:137] Memory required for data: 9544192
+I0418 18:22:06.300801 86354 layer_factory.hpp:77] Creating layer relu2
+I0418 18:22:06.300808 86354 net.cpp:84] Creating Layer relu2
+I0418 18:22:06.300813 86354 net.cpp:406] relu2 <- conv2
+I0418 18:22:06.300819 86354 net.cpp:367] relu2 -> conv2 (in-place)
+I0418 18:22:06.300827 86354 net.cpp:122] Setting up relu2
+I0418 18:22:06.300832 86354 net.cpp:129] Top shape: 64 64 4 4 (65536)
+I0418 18:22:06.300837 86354 net.cpp:137] Memory required for data: 9806336
+I0418 18:22:06.300839 86354 layer_factory.hpp:77] Creating layer pool2
+I0418 18:22:06.300846 86354 net.cpp:84] Creating Layer pool2
+I0418 18:22:06.300850 86354 net.cpp:406] pool2 <- conv2
+I0418 18:22:06.300856 86354 net.cpp:380] pool2 -> pool2
+I0418 18:22:06.300892 86354 net.cpp:122] Setting up pool2
+I0418 18:22:06.300900 86354 net.cpp:129] Top shape: 64 64 2 2 (16384)
+I0418 18:22:06.300904 86354 net.cpp:137] Memory required for data: 9871872
+I0418 18:22:06.300907 86354 layer_factory.hpp:77] Creating layer conv3
+I0418 18:22:06.300918 86354 net.cpp:84] Creating Layer conv3
+I0418 18:22:06.300923 86354 net.cpp:406] conv3 <- pool2
+I0418 18:22:06.300930 86354 net.cpp:380] conv3 -> conv3
+I0418 18:22:06.301162 86354 net.cpp:122] Setting up conv3
+I0418 18:22:06.301174 86354 net.cpp:129] Top shape: 64 1 2 2 (256)
+I0418 18:22:06.301178 86354 net.cpp:137] Memory required for data: 9872896
+I0418 18:22:06.301189 86354 layer_factory.hpp:77] Creating layer relu3
+I0418 18:22:06.301198 86354 net.cpp:84] Creating Layer relu3
+I0418 18:22:06.301203 86354 net.cpp:406] relu3 <- conv3
+I0418 18:22:06.301209 86354 net.cpp:367] relu3 -> conv3 (in-place)
+I0418 18:22:06.301216 86354 net.cpp:122] Setting up relu3
+I0418 18:22:06.301221 86354 net.cpp:129] Top shape: 64 1 2 2 (256)
+I0418 18:22:06.301225 86354 net.cpp:137] Memory required for data: 9873920
+I0418 18:22:06.301229 86354 layer_factory.hpp:77] Creating layer loss
+I0418 18:22:06.301244 86354 net.cpp:84] Creating Layer loss
+I0418 18:22:06.301247 86354 net.cpp:406] loss <- conv3
+I0418 18:22:06.301252 86354 net.cpp:406] loss <- label
+I0418 18:22:06.301259 86354 net.cpp:380] loss -> loss
+F0418 18:22:06.301285 86354 euclidean_loss_layer.cpp:12] Check failed: bottom[0]->count(1) == bottom[1]->count(1) (4 vs. 1681) Inputs must have the same dimension.
+*** Check failure stack trace: ***
+    @     0x7f5312a7ddaa  (unknown)
+    @     0x7f5312a7dce4  (unknown)
+    @     0x7f5312a7d6e6  (unknown)
+    @     0x7f5312a80687  (unknown)
+    @     0x7f531315e5fa  caffe::EuclideanLossLayer<>::Reshape()
+    @     0x7f53131bff65  caffe::Net<>::Init()
+    @     0x7f53131c1e62  caffe::Net<>::Net()
+    @     0x7f53131d7b40  caffe::Solver<>::InitTrainNet()
+    @     0x7f53131d8a93  caffe::Solver<>::Init()
+    @     0x7f53131d8d6f  caffe::Solver<>::Solver()
+    @     0x7f53131a00c1  caffe::Creator_SGDSolver<>()
+    @           0x40ee6e  caffe::SolverRegistry<>::CreateSolver()
+    @           0x407efd  train()
+    @           0x40590c  main
+    @     0x7f5311a89f45  (unknown)
+    @           0x40617b  (unknown)
+    @              (nil)  (unknown)
