@@ -1,1 +1,1 @@
-../../dataset/hdf5/SRCNN-5/train.h5
+../../dataset/hdf5/SRCNN-Pool/train.h5

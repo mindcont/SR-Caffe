@@ -14,11 +14,11 @@ close all;
 
 %% settings
 % VDSR use
-folder = '../dataset/images/91';
-savepath = '../dataset/hdf5/VDSR-20/train.h5';
-size_input = 41;
-size_label = 41;
-stride = 41;
+% folder = '../dataset/images/91';
+% savepath = '../dataset/hdf5/VDSR-20/train.h5';
+% size_input = 41;
+% size_label = 41;
+% stride = 41;
 
 % ours SRCNN-5 use
 % folder = '../dataset/images/91';
@@ -26,6 +26,13 @@ stride = 41;
 % size_input = 33;
 % size_label = 21;
 % stride = 14;
+
+% ours SRCNN-Pool
+folder = '../dataset/images/test';
+savepath = '../dataset/hdf5/SRCNN-Pool/train.h5';
+size_input = 41;
+size_label = 20;
+stride = 20 ;
 
 %% initialization
 data = zeros(size_input, size_input, 1, 1);

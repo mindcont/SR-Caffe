@@ -1,1 +1,1 @@
-../../dataset/hdf5/SRCNN-5/test.h5
+../../dataset/hdf5/SRCNN-Pool/test.h5

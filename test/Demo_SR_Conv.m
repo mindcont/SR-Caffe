@@ -13,12 +13,16 @@ run matconvnet/matlab/vl_setupnn;
 %% settings
 
 % VDSR use
-% load('results/VDSR/offical/VDSR_Offical.mat');
+% load('results/VDSR-20/official/VDSR_Official.mat');
 % load('results/VDSR-20/ours/VDSR_ours-1000.mat');
-load('results/VDSR-20/ours/VDSR_ours-100000.mat');
+% load('results/VDSR-20/ours/VDSR_ours-100000.mat');
 
-% SRCNN-5 use
-% load('results/SRCNN-5/ours/VDSR_ours-100000.mat');
+% SRCNN-5 use (not official test) please use train/SRCNN-5/demo
+% load('results/SRCNN-5/SRCNN-5_ours-10000.mat');
+
+% SRCNN-Pool use
+load('results/SRCNN-Pool/SRCNN-Pool_ours-1000.mat');
+% load('results/SRCNN-Pool/SRCNN-Pool_ours-15000.mat');
 
 use_cascade = 0;
 use_gpu = 0;
@@ -50,6 +54,7 @@ if use_gpu
     im_l_y = gpuArray(im_l_y);
 end
 tic;
+% 卷积超分辨
 im_h_y = VDSR_Matconvnet(im_l_y, model,up_scale,use_cascade);
 toc;
 if use_gpu
@@ -66,9 +71,10 @@ else
     im_b = im_y_cbcr * 255.0;
 end
 
-% figure;imshow(uint8(im_b));title('Bicubic Interpolation');
-figure;imshow(uint8(im_h));title('SR Reconstruction');
-% figure;imshow(uint8(im_gt));title('Origin');
+close all;
+imshow(uint8(im_gt)),title('原始图像');
+figure;imshow(uint8(im_b));title('双三次插值');
+figure;imshow(uint8(im_h));title('卷积超分辨');
 
 if shave == 1;
     shave_border = round(up_scale);
