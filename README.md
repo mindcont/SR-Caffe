@@ -56,23 +56,33 @@ This project implements two articles，["Image Super-Resolution Using Deep Convo
 
 ### How to use
 
-* 1 扩增数据集
+#### 1 数据准备
+
+下载数据集 [zip(train)](http://cv.snu.ac.kr/research/VDSR/train_data.zip)
+[zip(test)](http://cv.snu.ac.kr/research/VDSR/test_data.zip)
+
 ```java
-run train/data_aug.m
+mkdir dataset
+wget http://cv.snu.ac.kr/research/VDSR/train_data.zip
+wget http://cv.snu.ac.kr/research/VDSR/test_data.zip
+
+unzip train_data.zip images/
+
+use matlab run train/data_aug.m
 ```
 
-* 2 生成HDF5 格式，供caffe 训练
+#### 2 生成HDF5 格式，供caffe 训练
 ```java
 generate_train.m
 generate_test.m
 ```
 
-* 3 训练
+#### 3 训练
 ```java
 run train_VDSR-20.sh or train_SRCNN-5.sh
 ```
 
-* 4 测试评估
+#### 4 测试评估
 ```java
 run demo_SR.m
 ```
